@@ -8,7 +8,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Cb1-Jt-zDG">
             <objects>
-                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="CW5-ks-QiS" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="CW5-ks-QiS" customClass="XBTNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="GRR-dj-JWF">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -30,10 +30,10 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" id="6dt-B2-H4G">
                                 <rect key="frame" x="127" y="315" width="515" height="112"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap screen to begin" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eh9-4P-se4">
-                                <rect key="frame" x="311" y="600" width="146" height="71"/>
+                                <rect key="frame" x="0.0" y="600" width="768" height="71"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="30"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -46,6 +46,11 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="QU4-Y5-6Rk"/>
+                    <connections>
+                        <outlet property="logoImageView" destination="6dt-B2-H4G" id="VpM-ng-1a6"/>
+                        <outlet property="tapLabel" destination="eh9-4P-se4" id="K3R-nC-2Ze"/>
+                        <segue destination="2ZG-x6-rJX" kind="modal" identifier="kScanQrViewControllerSegueId" id="EiW-4k-YEn"/>
+                    </connections>
                 </viewController>
                 <tapGestureRecognizer id="bjC-2P-Rs1">
                     <connections>
@@ -76,7 +81,7 @@
                                     <action selector="payButtonPressed:" destination="bMW-fY-UkN" eventType="touchUpInside" id="eHA-CZ-UFG"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" id="FP2-Vy-ZbC" customClass="XBTTextField">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" id="FP2-Vy-ZbC" customClass="XBTTerminalTextField">
                                 <rect key="frame" x="114" y="350" width="540" height="89"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
@@ -91,7 +96,7 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="£" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mjb-LJ-RVK">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mjb-LJ-RVK">
                                 <rect key="frame" x="70" y="365" width="30" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
@@ -102,7 +107,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="amountLabel" destination="B7Z-pL-4XP" id="7zv-La-YW7"/>
                         <outlet property="amountTextField" destination="FP2-Vy-ZbC" id="cK3-cB-zV4"/>
+                        <outlet property="funtLabel" destination="Mjb-LJ-RVK" id="m8n-xg-uf9"/>
                         <outlet property="payButton" destination="xJa-zd-ShQ" id="xcj-2u-zx0"/>
                         <segue destination="Kmb-fv-dww" kind="push" identifier="kPaymentViewControllerSegueId" id="35C-Gx-V6R"/>
                     </connections>
@@ -120,7 +127,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" id="fxK-ds-8cE">
-                                <rect key="frame" x="0.0" y="322" width="768" height="30"/>
+                                <rect key="frame" x="90" y="322" width="588" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
                                 <nil key="highlightedColor"/>
@@ -134,7 +141,7 @@
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Tad-K0-Okb">
                                 <rect key="frame" x="203" y="417" width="362" height="362"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ltu-vg-06Y">
                                 <rect key="frame" x="221" y="864" width="327" height="60"/>
@@ -181,21 +188,21 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PAYMENT SUCCESSFUL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="02W-5c-UWc">
-                                <rect key="frame" x="0.0" y="245" width="768" height="35"/>
+                                <rect key="frame" x="90" y="245" width="588" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="42"/>
                                 <color key="textColor" red="0.26274509800000001" green="0.53725490200000003" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SCAN QR CODE FOR RECEIPE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="syS-zv-NX9">
-                                <rect key="frame" x="265" y="360" width="238" height="68"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SCAN QR CODE FOR RECEIPE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="syS-zv-NX9">
+                                <rect key="frame" x="90" y="360" width="588" height="68"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="29"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hFB-TU-EDk">
                                 <rect key="frame" x="259" y="490" width="250" height="250"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Plp-Uz-kg9">
                                 <rect key="frame" x="221" y="857" width="327" height="60"/>
@@ -216,16 +223,148 @@
                     <connections>
                         <outlet property="closeButton" destination="Plp-Uz-kg9" id="Rws-PZ-jwn"/>
                         <outlet property="qrImageView" destination="hFB-TU-EDk" id="pWU-dC-gN7"/>
+                        <outlet property="scanQrCodeLabel" destination="syS-zv-NX9" id="NwN-n2-kZF"/>
+                        <outlet property="successfulLabel" destination="02W-5c-UWc" id="Rjd-Ts-LuZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQG-xa-2T6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3408" y="101"/>
         </scene>
+        <!--Device View Controller-->
+        <scene sceneID="raZ-nt-Wu0">
+            <objects>
+                <viewController storyboardIdentifier="kDeviceViewControllerId" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xaz-VL-Zgv" customClass="XBTDeviceViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="c5c-KB-A4W">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="508"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Link device to account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="Q65-SI-VuF">
+                                <rect key="frame" x="0.0" y="44" width="480" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="30"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have account? Paste key or scan QR code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="CCy-P7-RJ2">
+                                <rect key="frame" x="0.0" y="110" width="480" height="63"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="27"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="D8k-Xr-52c" customClass="XBTTextField">
+                                <rect key="frame" x="27" y="195" width="362" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="xaz-VL-Zgv" id="hNb-BL-wc0"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="X7g-fC-FeF">
+                                <rect key="frame" x="125" y="290" width="230" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="32"/>
+                                <state key="normal" title="Done" backgroundImage="ButtonBlue">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonPressed:" destination="xaz-VL-Zgv" eventType="touchUpInside" id="lnH-Tq-aIz"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d3o-Vm-A4y">
+                                <rect key="frame" x="0.0" y="420" width="480" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cn5-6d-l5x">
+                                <rect key="frame" x="0.0" y="460" width="480" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="27"/>
+                                <state key="normal" title="Create account online">
+                                    <color key="titleColor" red="0.1960784314" green="0.50588235290000005" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="createAccountButtonPressed:" destination="xaz-VL-Zgv" eventType="touchUpInside" id="4f4-TH-Bkq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CXg-B0-YDR">
+                                <rect key="frame" x="400" y="195" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" backgroundImage="ScanQRCode">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="scanQrButtonPressed:" destination="xaz-VL-Zgv" eventType="touchUpInside" id="oQa-e3-SHp"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="480" height="508"/>
+                    <connections>
+                        <outlet property="createAccountButton" destination="cn5-6d-l5x" id="XH5-4K-PAU"/>
+                        <outlet property="doneButton" destination="X7g-fC-FeF" id="j6Q-R8-Lef"/>
+                        <outlet property="haveAccountLabel" destination="CCy-P7-RJ2" id="Bo9-v7-P17"/>
+                        <outlet property="keyTextField" destination="D8k-Xr-52c" id="9Ku-ZM-ey4"/>
+                        <outlet property="linkDeviceLabel" destination="Q65-SI-VuF" id="sAd-07-mmi"/>
+                        <outlet property="orLabel" destination="d3o-Vm-A4y" id="7Co-cy-FPg"/>
+                        <outlet property="scanQrButton" destination="CXg-B0-YDR" id="zAN-MK-OA4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dcC-d8-pLw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="724" y="1328"/>
+        </scene>
+        <!--Scan Qr View Controller-->
+        <scene sceneID="x7J-MR-3jZ">
+            <objects>
+                <viewController storyboardIdentifier="kScanQrViewControllerId" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2ZG-x6-rJX" customClass="XBTScanQrViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ybc-VF-yd8">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" id="nbR-Xl-tOn" customClass="ZBarReaderView">
+                                <rect key="frame" x="0.0" y="123" width="768" height="752"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gQh-Kd-45W">
+                                <rect key="frame" x="221" y="924" width="327" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="27"/>
+                                <state key="normal" title="Cancel" backgroundImage="ButtonBlue">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButtonPressed:" destination="2ZG-x6-rJX" eventType="touchUpInside" id="sNr-gf-jVg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="bXZ-eA-45F"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="gQh-Kd-45W" id="zJn-z6-DVi"/>
+                        <outlet property="scanQrView" destination="nbR-Xl-tOn" id="Nea-4c-I2l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jve-Id-1BW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="724" y="-1075"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ButtonBlue" width="327" height="60"/>
         <image name="Logo" width="515" height="112"/>
+        <image name="ScanQRCode" width="55" height="55"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

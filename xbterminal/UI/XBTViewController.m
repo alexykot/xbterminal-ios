@@ -33,9 +33,21 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self updateCopyrightLabel];
-    
     [super viewWillAppear:animated];
+    
+    [self updateForInterfaceOrientation:self.interfaceOrientation];
+    
+    [self updateLabels];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsUpdated) name:kSettingsUpdatedNotificationKey object:nil];
+    [self settingsUpdated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,9 +56,25 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [UIView animateWithDuration:duration animations:^{
+       
+        [self updateForInterfaceOrientation:toInterfaceOrientation];
+        
+    }];
+}
+
 #pragma mark - Public
 
-- (void)updateCopyrightLabel
+- (void)settingsUpdated
+{
+    [self updateLabels];
+}
+
+#pragma mark - Private
+
+- (void)updateLabels
 {
     if([XBTSettings sharedInstance].merchantName || [XBTSettings sharedInstance].merchantDeviceName)
     {
@@ -56,42 +84,35 @@
     {
         _copyrightLabel.text = @"";
     }
+    
+    if([XBTSettings sharedInstance].isTestnetActive)
+    {
+        _testnetLabel.text = NSLocalizedString(@"testnet active", nil);
+    }
+    else
+    {
+        _testnetLabel.text = @"";
+    }
 }
-
-#pragma mark - Private
 
 - (void)setupLogo
 {
     self.logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Logo"]];
-    
-    _logoView.width = ForIPhoneOrIPad(kLogoIPhoneWidth, kLogoIPadWidth);
-    _logoView.height = ForIPhoneOrIPad(kLogoIPhoneHeight, kLogoIPadHeight);
-    _logoView.y = ForIPhoneOrIPad(kLogoIPhoneY, kLogoIPadY);
-    _logoView.x = (self.view.width - _logoView.width) / 2;
     
     [self.view addSubview:_logoView];
 }
 
 - (void)setupTestnet
 {
-    if([XBTSettings sharedInstance].isTestnetActive)
-    {
-        self.testnetLabel = [[UILabel alloc] init];
-        
-        _testnetLabel.text = @"testnet active";
-        _testnetLabel.font = [[XBTSettings sharedInstance] romanFontWithSize:ForIPhoneOrIPad(kTestnetIPhoneFontSize, kTestnetIPadFontSize)];
-        
-        _testnetLabel.textAlignment = NSTextAlignmentCenter;
-        _testnetLabel.textColor = UIColorRGBHex(kColorTestnetHEX);
-        _testnetLabel.backgroundColor = [UIColor clearColor];
-        
-        _testnetLabel.width = self.view.width;
-        _testnetLabel.height = kTestnetIPhoneHeight;
-        _testnetLabel.y = ForIPhoneOrIPad(kTestnetIPhoneY, kTestnetIPadY);
-        _testnetLabel.x = 0;
-        
-        [self.view addSubview:_testnetLabel];
-    }
+    self.testnetLabel = [[UILabel alloc] init];
+    
+    _testnetLabel.font = [[XBTSettings sharedInstance] romanFontWithSize:ForIPhoneOrIPad(kTestnetIPhoneFontSize, kTestnetIPadFontSize)];
+    
+    _testnetLabel.textAlignment = NSTextAlignmentCenter;
+    _testnetLabel.textColor = UIColorRGBHex(kColorTestnetHEX);
+    _testnetLabel.backgroundColor = [UIColor clearColor];
+    
+    [self.view addSubview:_testnetLabel];
 }
 
 - (void)setupCopyright
@@ -103,12 +124,54 @@
     _copyrightLabel.numberOfLines = 2;
     _copyrightLabel.backgroundColor = [UIColor clearColor];
     
-    _copyrightLabel.width = self.view.width;
-    _copyrightLabel.height = kCopyrightIPhoneHeight;
-    _copyrightLabel.y = self.view.height - _copyrightLabel.height - kCopyrightIPhoneBottomOffset;
-    _copyrightLabel.x = (self.view.width - _copyrightLabel.width) / 2;
-    
     [self.view addSubview:_copyrightLabel];
+}
+
+- (void)updateForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    CGFloat maxWidthHeight = MAX(self.view.height, self.view.width);
+    CGFloat minWidthHeight = MIN(self.view.height, self.view.width);
+    
+    CGRect logoViewFrame = _logoView.frame;
+    logoViewFrame.origin.y = ForIPhoneOrIPad(kLogoIPhoneY, kLogoIPadY);
+    logoViewFrame.size.width = ForIPhoneOrIPad(kLogoIPhoneWidth, kLogoIPadWidth);
+    logoViewFrame.size.height = ForIPhoneOrIPad(kLogoIPhoneHeight, kLogoIPadHeight);
+    
+    CGRect testnetLabelFrame = _testnetLabel.frame;
+    testnetLabelFrame.size.width = self.view.width;
+    testnetLabelFrame.size.height = kTestnetIPhoneHeight;
+    testnetLabelFrame.origin.y = ForIPhoneOrIPad(kTestnetIPhoneY, kTestnetIPadY);
+    
+    CGRect copyrightLabelFrame = _copyrightLabel.frame;
+    copyrightLabelFrame.size.width = self.view.width;
+    copyrightLabelFrame.size.height = kCopyrightIPhoneHeight;
+    
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+    {
+        logoViewFrame.origin.x = (maxWidthHeight - logoViewFrame.size.width) / 2;
+        
+        testnetLabelFrame.origin.x = (maxWidthHeight - testnetLabelFrame.size.width) / 2;
+        
+        copyrightLabelFrame.origin.x = (maxWidthHeight - copyrightLabelFrame.size.width) / 2;
+        copyrightLabelFrame.origin.y = minWidthHeight - copyrightLabelFrame.size.height - kCopyrightIPhoneBottomOffset;
+    }
+    else
+    {
+        logoViewFrame.origin.x = (minWidthHeight - logoViewFrame.size.width) / 2;
+        
+        testnetLabelFrame.origin.x = (minWidthHeight - testnetLabelFrame.size.width) / 2;
+        
+        copyrightLabelFrame.origin.x = (minWidthHeight - copyrightLabelFrame.size.width) / 2;
+        copyrightLabelFrame.origin.y = maxWidthHeight - copyrightLabelFrame.size.height - kCopyrightIPhoneBottomOffset;
+    }
+    
+    if(![XBTSettings sharedInstance].isIOS7)
+    {
+        testnetLabelFrame.origin.y -= 15;
+    }
+    _logoView.frame = logoViewFrame;
+    _testnetLabel.frame = testnetLabelFrame;
+    _copyrightLabel.frame = copyrightLabelFrame;
 }
 
 @end

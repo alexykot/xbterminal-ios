@@ -29,11 +29,6 @@
     return [self textRectForBounds:bounds];
 }
 
-- (CGRect)caretRectForPosition:(UITextPosition *)position
-{
-    return CGRectZero;
-}
-
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];

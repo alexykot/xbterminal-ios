@@ -7,11 +7,13 @@
 //
 
 #import "XBTAppDelegate.h"
+#import "ZBarReaderView.h"
 
 @implementation XBTAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [ZBarReaderView class];
     [XBTSettings sharedInstance];
     return YES;
 }

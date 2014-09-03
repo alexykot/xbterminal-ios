@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UILabel *testnetLabel;
 @property (strong, nonatomic) UILabel *copyrightLabel;
 
-- (void)updateCopyrightLabel;
+- (void)settingsUpdated;
+- (void)updateForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
 @end

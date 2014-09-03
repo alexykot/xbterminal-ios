@@ -16,25 +16,33 @@
 #import "NSData+Additions.h"
 #import "UIImage+Additions.h"
 
+#define kSettingsUpdatedNotificationKey @"kSettingsUpdatedNotificationKey"
+
 @interface XBTSettings : XBTSingleton
 
 @property (strong, nonatomic) NSString *deviceNumber;
 @property (assign, nonatomic) BOOL isTestnetActive;
-@property (strong, nonatomic) NSString *merchantName;
-@property (strong, nonatomic) NSString *merchantDeviceName;
+@property (copy, nonatomic) NSString *merchantName;
+@property (copy, nonatomic) NSString *merchantDeviceName;
+@property (copy, nonatomic) NSString *thousandsSplit;
+@property (copy, nonatomic) NSString *fractionalSplit;
+@property (copy, nonatomic) NSString *signPrefix;
+@property (copy, nonatomic) NSString *signPostfix;
 @property (strong, nonatomic, readonly) NSLocale *locale;
-
-- (void)updateSettingsWithCompletion:(void (^)(NSError *error))completion;
 
 - (BOOL)isIPhone;
 
 - (BOOL)isIPad;
+
+- (BOOL)isIOS7;
 
 - (UIFont *)lightFontWithSize:(CGFloat)size;
 
 - (UIFont *)romanFontWithSize:(CGFloat)size;
 
 - (UIFont *)mediumFontWithSize:(CGFloat)size;
+
+- (void)updateSettingsWithCompletion:(void (^)(NSError *error))completion;
 
 @end
 

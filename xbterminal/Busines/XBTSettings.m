@@ -11,6 +11,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 
 #define kDeviceNumberKey @"kDeviceNumberKey"
+#define kUpdateTimeInterval 60.0
 
 float roundToN(float num, int decimals)
 {
@@ -18,6 +19,10 @@ float roundToN(float num, int decimals)
     for (; decimals; tenpow *= 10, decimals--);
     return round(tenpow * num) / tenpow;
 }
+
+@interface XBTSettings ()
+
+@end
 
 @implementation XBTSettings
 
@@ -49,12 +54,19 @@ float roundToN(float num, int decimals)
     XBTRequest *request = [[XBTRequest alloc] initWithPath:[@"/api/devices/" stringByAppendingString:self.deviceNumber]];
     
     [request startWithCompletion:^(XBTRequest *request) {
-       
+        
         if(!request.error)
         {
             self.isTestnetActive = [SafeValue(request.responseObject[@"BITCOIN_NETWORK"]) isEqual:@"testnet"];
             self.merchantName = SafeValue(request.responseObject[@"MERCHANT_NAME"]);
             self.merchantDeviceName = SafeValue(request.responseObject[@"MERCHANT_DEVICE_NAME"]);
+            self.thousandsSplit = SafeValue(request.responseObject[@"OUTPUT_DEC_THOUSANDS_SPLIT"]);
+            self.fractionalSplit = SafeValue(request.responseObject[@"OUTPUT_DEC_FRACTIONAL_SPLIT"]);
+            self.signPrefix = SafeValue(request.responseObject[@"MERCHANT_CURRENCY_SIGN_PREFIX"]);
+            self.signPostfix = SafeValue(request.responseObject[@"MERCHANT_CURRENCY_SIGN_POSTFIX"]);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSettingsUpdatedNotificationKey object:nil];
+            [self performSelector:@selector(updateSettingsWithCompletion:) withObject:nil afterDelay:kUpdateTimeInterval];
         }
         if(completion)
         {
@@ -66,12 +78,7 @@ float roundToN(float num, int decimals)
 
 - (NSString *)deviceNumber
 {
-    NSString *deviceNumber = [[NSUserDefaults standardUserDefaults] objectForKey:kDeviceNumberKey];
-    if(!deviceNumber)
-    {
-        deviceNumber = kDefaultDeviceNumber;
-    }
-    return deviceNumber;
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kDeviceNumberKey];
 }
 
 - (void)setDeviceNumber:(NSString *)deviceNumber
@@ -88,6 +95,11 @@ float roundToN(float num, int decimals)
 - (BOOL)isIPad
 {
     return !self.isIPhone;
+}
+
+- (BOOL)isIOS7
+{
+    return [[[UIDevice currentDevice] systemVersion] compare:@"7.0" options:NSNumericSearch] == NSOrderedDescending;
 }
 
 - (UIFont *)lightFontWithSize:(CGFloat)size
@@ -113,5 +125,7 @@ float roundToN(float num, int decimals)
     }
     return _locale;
 }
+
+#pragma mark - Private
 
 @end

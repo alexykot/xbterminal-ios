@@ -14,6 +14,8 @@
 
 @interface XBTMainViewController () <UITextFieldDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *amountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *funtLabel;
 @property (weak, nonatomic) IBOutlet UIButton *payButton;
 @property (weak, nonatomic) IBOutlet UITextField *amountTextField;
 
@@ -35,13 +37,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _amountLabel.text = NSLocalizedString(@"amount", nil);
+    [_payButton setTitle:NSLocalizedString(@"Pay now", nil) forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     _amountTextField.text = @"0.00";
     [_amountTextField becomeFirstResponder];
-    [super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,7 +58,71 @@
 
 #pragma mark - Public
 
+- (void)settingsUpdated
+{
+    [super settingsUpdated];
+    
+    [self updateAmountTextField];
+    _funtLabel.text = [XBTSettings sharedInstance].signPrefix;
+}
+
 #pragma mark - Private
+
+- (void)updateForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    [super updateForInterfaceOrientation:interfaceOrientation];
+    
+    CGFloat minWidthHeight = MIN(self.view.height, self.view.width);
+    
+    CGRect funtLabelFrame = _funtLabel.frame;
+    CGRect amountLabelFrame = _amountLabel.frame;
+    CGRect amountTextFieldFrame = _amountTextField.frame;
+    CGRect payButtonFrame = _payButton.frame;
+    
+    CGFloat amountFuntDiff = amountLabelFrame.origin.x - funtLabelFrame.origin.x;
+    
+    if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+    {
+        funtLabelFrame.origin.y = ForIPhoneOrIPad(kMainFuntIPhoneLandscapeY, kMainFuntIPadLandscapeY);
+        funtLabelFrame.origin.x = ForIPhoneOrIPad(funtLabelFrame.origin.x, kMainFuntIPadLandscapeX);
+        amountLabelFrame.origin.y = ForIPhoneOrIPad(kMainAmountIPhoneLandscapeY, kMainAmountIPadLandscapeY);
+        amountTextFieldFrame.origin.y = ForIPhoneOrIPad(kMainAmountTextFieldIPhoneLandscapeY, kMainAmountTextFieldIPadLandscapeY);
+        amountTextFieldFrame.size.width = ForIPhoneOrIPad(kMainAmountTextFieldIPhoneLandscapeWidth, kMainAmountTextFieldIPadLandscapeWidth);
+        
+        payButtonFrame.origin.y = ForIPhoneOrIPad(kMainPayButtonIPhoneLandscapeY, kMainPayButtonIPadLandscapeY);
+        payButtonFrame.origin.x = ForIPhoneOrIPad(kMainPayButtonIPhoneLandscapeX, kMainPayButtonIPadLandscapeX);
+        payButtonFrame.size.width = ForIPhoneOrIPad(kMainPayButtonIPhoneLandscapeWidth, kMainPayButtonIPadLandscapeWidth);
+        payButtonFrame.size.height = ForIPhoneOrIPad(kMainPayButtonIPhoneLandscapeHeight, kMainPayButtonIPadLandscapeHeight);
+    }
+    else
+    {
+        funtLabelFrame.origin.y = ForIPhoneOrIPad(kMainFuntIPhoneY, kMainFuntIPadY);
+        funtLabelFrame.origin.x = ForIPhoneOrIPad(funtLabelFrame.origin.x, kMainFuntIPadX);
+        amountLabelFrame.origin.y = ForIPhoneOrIPad(kMainAmountIPhoneY, kMainAmountIPadY);
+        amountTextFieldFrame.origin.y = ForIPhoneOrIPad(kMainAmountTextFieldIPhoneY, kMainAmountTextFieldIPadY);
+        amountTextFieldFrame.size.width = ForIPhoneOrIPad(kMainAmountTextFieldIPhoneWidth, kMainAmountTextFieldIPadWidth);
+        
+        payButtonFrame.origin.y = ForIPhoneOrIPad(kMainPayButtonIPhoneY, kMainPayButtonIPadY);
+        payButtonFrame.origin.x = (minWidthHeight - _payButton.width) / 2;
+        payButtonFrame.size.width = ForIPhoneOrIPad(kMainPayButtonIPhoneWidth, kMainPayButtonIPadWidth);
+        payButtonFrame.size.height = ForIPhoneOrIPad(kMainPayButtonIPhoneHeight, kMainPayButtonIPadHeight);
+    }
+    
+    amountLabelFrame.origin.x = amountTextFieldFrame.origin.x = ForIPhoneOrIPad(amountTextFieldFrame.origin.x, funtLabelFrame.origin.x + amountFuntDiff);
+    
+    if(![XBTSettings sharedInstance].isIOS7)
+    {
+        funtLabelFrame.origin.y -= 20;
+        amountLabelFrame.origin.y -= 20;
+        amountTextFieldFrame.origin.y -= 20;
+        payButtonFrame.origin.y -= 20;
+    }
+    
+    _funtLabel.frame = funtLabelFrame;
+    _amountLabel.frame = amountLabelFrame;
+    _amountTextField.frame = amountTextFieldFrame;
+    _payButton.frame = payButtonFrame;
+}
 
 - (NSNumberFormatter *)numberFormatterForAmmountTextField
 {
@@ -63,7 +133,21 @@
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
         numberFormatter.locale = [XBTSettings sharedInstance].locale;
     }
-    
+    return numberFormatter;
+}
+
+- (NSNumberFormatter *)numberFormatterForGrouppingInAmmountTextField
+{
+    static NSNumberFormatter *numberFormatter = nil;
+    if(!numberFormatter)
+    {
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        numberFormatter.groupingSize = 3;
+        numberFormatter.usesGroupingSeparator = YES;
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numberFormatter.maximumFractionDigits = 2;
+        numberFormatter.minimumFractionDigits = 2;
+    }
     return numberFormatter;
 }
 
@@ -94,35 +178,14 @@
     }
 }
 
-#pragma mark - Actions
-
-- (IBAction)payButtonPressed:(id)sender
+- (NSString *)numbersStringFromAmountTextField
 {
-    [self pay];
+    return [[_amountTextField.text stringByReplacingOccurrencesOfString:@"," withString:@""] stringByReplacingOccurrencesOfString:@"." withString:@""];
 }
 
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)updateAmountTextField
 {
-    if([string rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location == NSNotFound && string.length)
-    {
-        return NO;
-    }
-    NSString *candidateString = [[textField.text stringByReplacingOccurrencesOfString:@"," withString:@""] stringByReplacingOccurrencesOfString:@"." withString:@""];
-    
-    if(range.length == 0) //adding
-    {
-        candidateString = [candidateString stringByAppendingString:string];
-    }
-    else if(range.length == 1) //deleting
-    {
-        if(candidateString.length)
-        {
-            candidateString = [candidateString substringToIndex:candidateString.length - 1];
-        }
-    }
-    
+    NSString *candidateString = [self numbersStringFromAmountTextField];
     //0.00
     NSString *nullsString = @"";
     for(int i = 3; i > candidateString.length; i--)
@@ -140,10 +203,47 @@
         }
     }
     
-    NSUInteger indexToSubstring = candidateString.length - 2;
-    candidateString = [NSString stringWithFormat:@"%@.%@", [candidateString substringToIndex:indexToSubstring], [candidateString substringFromIndex:indexToSubstring]];
+    double candidateNumber = [candidateString doubleValue] / 100;
+    
+    NSNumberFormatter *numberFormatter = [self numberFormatterForGrouppingInAmmountTextField];
+    numberFormatter.groupingSeparator = [XBTSettings sharedInstance].thousandsSplit;
+    numberFormatter.decimalSeparator = [XBTSettings sharedInstance].fractionalSplit;
+    candidateString = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:candidateNumber]];
+    
+    _amountTextField.text = candidateString;
+}
+
+#pragma mark - Actions
+
+- (IBAction)payButtonPressed:(id)sender
+{
+    [self pay];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if([string rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]].location == NSNotFound && string.length)
+    {
+        return NO;
+    }
+    NSString *candidateString = [self numbersStringFromAmountTextField];;
+    
+    if(range.length == 0) //adding
+    {
+        candidateString = [candidateString stringByAppendingString:string];
+    }
+    else if(range.length == 1) //deleting
+    {
+        if(candidateString.length)
+        {
+            candidateString = [candidateString substringToIndex:candidateString.length - 1];
+        }
+    }
     
     textField.text = candidateString;
+    [self updateAmountTextField];
     
     return NO;
 }

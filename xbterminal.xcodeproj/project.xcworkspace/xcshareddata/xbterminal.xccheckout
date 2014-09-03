@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7701474B-F9F7-4E0E-B97D-C13FF30C25C0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>xbterminal</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>5AB31112-6575-4137-82D2-6C9226FF19B3</key>
+		<string>https://bitbucket.org/alexykot/xbterminal-ios.git</string>
+		<key>E1D5149A-A34F-4F62-9ED8-246B65A8D7C3</key>
+		<string>https://bitbucket.org/vexadev/xbterminal.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iOS/xbterminal.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>5AB31112-6575-4137-82D2-6C9226FF19B3</key>
+		<string>../..</string>
+		<key>E1D5149A-A34F-4F62-9ED8-246B65A8D7C3</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/alexykot/xbterminal-ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E1D5149A-A34F-4F62-9ED8-246B65A8D7C3</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>5AB31112-6575-4137-82D2-6C9226FF19B3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iOS</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E1D5149A-A34F-4F62-9ED8-246B65A8D7C3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>xbterminal</string>
+		</dict>
+	</array>
+</dict>
+</plist>

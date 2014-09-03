@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  xbterminal
+
+  Created by Evgeniy Tka4enko on 28.08.14.
+  Copyright (c) 2014 vexadev. All rights reserved.
+*/
+
+"Tap screen to begin"="Tap screen to begin";
+"Cancel"="Cancel";
+"Pay now"="Pay now ";
+"PAYMENT SUCCESSFUL"="PAYMENT SUCCESSFUL";
+"TOUCH NFC NOW"="TOUCH NFC NOW";
+"SCAN QR CODE FOR RECEIPE"="SCAN QR CODE FOR RECEIPE";
+"Close"="Close";
+"Link device to account"="Link device to account";
+"Have account?"="Have account?";
+"Paste key or scan QR code"="Paste key or scan QR code";
+"Done"="Done";
+"or"="or";
+"Create account online"="Create account online";
+"testnet active"="testnet active";
+"Exchange rate"="Exchange rate";
+"amount"="amount";
